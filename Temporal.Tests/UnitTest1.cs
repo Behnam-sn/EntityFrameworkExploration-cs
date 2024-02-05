@@ -12,11 +12,11 @@ namespace Temporal.Tests
         private const int SOME_VALUE = 1;
         private const int SOME_OTHER_VALUE = 2;
 
-        public DomainDbContext DomainDbContext { get; }
+        private readonly DomainDbContext domainDbContext;
 
         public UnitTest1(DomainDbContextFixture domainDbContextFixture)
         {
-            DomainDbContext = domainDbContextFixture.DomainDbContext;
+            domainDbContext = domainDbContextFixture.DomainDbContext;
         }
 
         [Fact]
@@ -38,10 +38,10 @@ namespace Temporal.Tests
                 }
             };
             // Act
-            await DomainDbContext.AddAsync(document);
-            await DomainDbContext.SaveChangesAsync();
+            await domainDbContext.AddAsync(document);
+            await domainDbContext.SaveChangesAsync();
             // Assert
-            var actual = DomainDbContext.Documents.First(d => d.Id == document.Id);
+            var actual = domainDbContext.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Title = SOME_TITLE,
@@ -74,15 +74,15 @@ namespace Temporal.Tests
                     parameterValue
                 }
             };
-            await DomainDbContext.AddAsync(document);
-            await DomainDbContext.SaveChangesAsync();
+            await domainDbContext.AddAsync(document);
+            await domainDbContext.SaveChangesAsync();
             // Act
             document.Title = SOME_OTHER_TITLE;
             parameterValue.Code = SOME_OTHER_CODE;
             parameterValue.Value = SOME_OTHER_VALUE;
-            await DomainDbContext.SaveChangesAsync();
+            await domainDbContext.SaveChangesAsync();
             // Assert
-            var actual = DomainDbContext.Documents.First(d => d.Id == document.Id);
+            var actual = domainDbContext.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Title = SOME_OTHER_TITLE,
@@ -115,13 +115,13 @@ namespace Temporal.Tests
                     parameterValue
                 }
             };
-            await DomainDbContext.AddAsync(document);
-            await DomainDbContext.SaveChangesAsync();
+            await domainDbContext.AddAsync(document);
+            await domainDbContext.SaveChangesAsync();
             // Act
             document.Title = SOME_OTHER_TITLE;
-            await DomainDbContext.SaveChangesAsync();
+            await domainDbContext.SaveChangesAsync();
             // Assert
-            var actual = DomainDbContext.Documents.First(d => d.Id == document.Id);
+            var actual = domainDbContext.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Title = SOME_OTHER_TITLE,
@@ -154,15 +154,15 @@ namespace Temporal.Tests
                     parameterValue
                 }
             };
-            await DomainDbContext.AddAsync(document);
-            await DomainDbContext.SaveChangesAsync();
+            await domainDbContext.AddAsync(document);
+            await domainDbContext.SaveChangesAsync();
             // Act
             document.Title = SOME_OTHER_TITLE;
             parameterValue.Code = SOME_OTHER_CODE;
             parameterValue.Value = SOME_OTHER_VALUE;
-            await DomainDbContext.SaveChangesAsync();
+            await domainDbContext.SaveChangesAsync();
             // Assert
-            var actual = DomainDbContext.Documents.TemporalAll().Where(d => d.Id == document.Id).ToList();
+            var actual = domainDbContext.Documents.TemporalAll().Where(d => d.Id == document.Id).ToList();
             actual.Should().BeEquivalentTo(new[]
             {
                 new
