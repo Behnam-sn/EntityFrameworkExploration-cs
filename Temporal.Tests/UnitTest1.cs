@@ -119,6 +119,45 @@ namespace Temporal.Tests
             await DomainDbContext.SaveChangesAsync();
             // Act
             document.Title = SOME_OTHER_TITLE;
+            await DomainDbContext.SaveChangesAsync();
+            // Assert
+            var actual = DomainDbContext.Documents.First(d => d.Id == document.Id);
+            actual.Should().BeEquivalentTo(new
+            {
+                Title = SOME_OTHER_TITLE,
+                ParameterValues = new[]
+                {
+                    new
+                    {
+                        Code = SOME_CODE,
+                        Value = SOME_VALUE
+                    }
+                }
+            });
+        }
+
+        [Fact]
+        public async Task Test4()
+        {
+            // Arrange
+            var parameterValue = new ParameterValue()
+            {
+                Code = SOME_CODE,
+                Value = SOME_VALUE
+            };
+            var document = new Document()
+            {
+                Id = Guid.NewGuid(),
+                Title = SOME_TITLE,
+                ParameterValues = new List<ParameterValue>
+                {
+                    parameterValue
+                }
+            };
+            await DomainDbContext.AddAsync(document);
+            await DomainDbContext.SaveChangesAsync();
+            // Act
+            document.Title = SOME_OTHER_TITLE;
             parameterValue.Code = SOME_OTHER_CODE;
             parameterValue.Value = SOME_OTHER_VALUE;
             await DomainDbContext.SaveChangesAsync();
