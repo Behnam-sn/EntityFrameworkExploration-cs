@@ -162,8 +162,31 @@ namespace Temporal.Tests
             parameterValue.Value = SOME_OTHER_VALUE;
             await domainDbContext.SaveChangesAsync();
             // Assert
-            var actual = domainDbContext.Documents.TemporalAll().Where(d => d.Id == document.Id).ToList();
-            actual.Should().BeEquivalentTo(new[]
+            var documents = await domainDbContext
+                .Documents
+                .TemporalAll()
+                .Where(d => d.Id == document.Id)
+                .Select(d => new DocumentVM
+                {
+                    Id = d.Id,
+                    Title = d.Title,
+                    ValidFrom = EF.Property<DateTime>(d, "ValidFrom"),
+                    ValidTo = EF.Property<DateTime>(d, "ValidTo")
+                })
+                .ToListAsync();
+
+            foreach (var documentItem in documents)
+            {
+                var parameterValues = domainDbContext
+                    .ParameterValues
+                    .TemporalFromTo(documentItem.ValidFrom, documentItem.ValidTo)
+                    .Where(pv => pv.DocumentId == documentItem.Id)
+                    .ToList();
+
+                documentItem.ParameterValues = parameterValues;
+            }
+
+            documents.Should().BeEquivalentTo(new[]
             {
                 new
                 {

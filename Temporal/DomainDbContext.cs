@@ -14,8 +14,18 @@ namespace Temporal
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Document>().ToTable("Documents", b => b.IsTemporal());
-            modelBuilder.Entity<ParameterValue>().ToTable("ParameterValues", b => b.IsTemporal());
+            modelBuilder.Entity<Document>().ToTable("Documents", b => b.IsTemporal(
+                b =>
+                {
+                    b.HasPeriodStart("ValidFrom");
+                    b.HasPeriodEnd("ValidTo");
+                }));
+            modelBuilder.Entity<ParameterValue>().ToTable("ParameterValues", b => b.IsTemporal(
+                b =>
+                {
+                    b.HasPeriodStart("ValidFrom");
+                    b.HasPeriodEnd("ValidTo");
+                }));
         }
     }
 }
