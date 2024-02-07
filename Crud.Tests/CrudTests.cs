@@ -2,11 +2,11 @@ namespace Crud.Tests
 {
     public class CrudTests : IClassFixture<BloggingDbContextFixture>
     {
-        private readonly BloggingDbContext context;
+        private readonly BloggingDbContext _context;
 
         public CrudTests(BloggingDbContextFixture bloggingDbContextFixture)
         {
-            context = bloggingDbContextFixture.Context;
+            _context = bloggingDbContextFixture.Context;
         }
 
         [Fact]
@@ -18,10 +18,10 @@ namespace Crud.Tests
                 Url = "http://blogs.msdn.com/adonet"
             };
             // Act
-            await context.Blogs.AddAsync(blog);
-            await context.SaveChangesAsync();
+            await _context.Blogs.AddAsync(blog);
+            await _context.SaveChangesAsync();
             // Assert
-            var actual = context.Blogs.First(b => b.Id == blog.Id);
+            var actual = _context.Blogs.First(b => b.Id == blog.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Url = "http://blogs.msdn.com/adonet"
@@ -36,8 +36,8 @@ namespace Crud.Tests
             {
                 Url = "http://blogs.msdn.com/adonet"
             };
-            await context.Blogs.AddAsync(blog);
-            await context.SaveChangesAsync();
+            await _context.Blogs.AddAsync(blog);
+            await _context.SaveChangesAsync();
             // Act
             blog.Url = "https://devblogs.microsoft.com/dotnet";
             blog.Posts.Add(
@@ -46,9 +46,9 @@ namespace Crud.Tests
                     Title = "Hello World",
                     Content = "I wrote an app using EF Core!"
                 });
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             // Assert
-            var actual = context.Blogs.First(b => b.Id == blog.Id);
+            var actual = _context.Blogs.First(b => b.Id == blog.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Url = "https://devblogs.microsoft.com/dotnet",
@@ -71,13 +71,13 @@ namespace Crud.Tests
             {
                 Url = "http://blogs.msdn.com/adonet"
             };
-            await context.Blogs.AddAsync(blog);
-            await context.SaveChangesAsync();
+            await _context.Blogs.AddAsync(blog);
+            await _context.SaveChangesAsync();
             // Act
-            context.Blogs.Remove(blog);
-            await context.SaveChangesAsync();
+            _context.Blogs.Remove(blog);
+            await _context.SaveChangesAsync();
             // Assert
-            context.Blogs.Should().BeEmpty();
+            _context.Blogs.Should().BeEmpty();
         }
     }
 }

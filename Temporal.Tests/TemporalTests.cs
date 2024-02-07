@@ -5,11 +5,11 @@ namespace Temporal.Tests
 {
     public class TemporalTests : IClassFixture<ApplicationDbContextFixture>
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
 
         public TemporalTests(ApplicationDbContextFixture domainDbContextFixture)
         {
-            context = domainDbContextFixture.Context;
+            _context = domainDbContextFixture.Context;
         }
 
         [Fact]
@@ -31,10 +31,10 @@ namespace Temporal.Tests
                 }
             };
             // Act
-            await context.AddAsync(document);
-            await context.SaveChangesAsync();
+            await _context.AddAsync(document);
+            await _context.SaveChangesAsync();
             // Assert
-            var actual = context.Documents.First(d => d.Id == document.Id);
+            var actual = _context.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Title = TemporalTestConstants.SOME_TITLE,
@@ -67,15 +67,15 @@ namespace Temporal.Tests
                     parameterValue
                 }
             };
-            await context.AddAsync(document);
-            await context.SaveChangesAsync();
+            await _context.AddAsync(document);
+            await _context.SaveChangesAsync();
             // Act
             document.Title = TemporalTestConstants.SOME_OTHER_TITLE;
             parameterValue.Code = TemporalTestConstants.SOME_OTHER_CODE;
             parameterValue.Value = TemporalTestConstants.SOME_OTHER_VALUE;
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             // Assert
-            var actual = context.Documents.First(d => d.Id == document.Id);
+            var actual = _context.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Title = TemporalTestConstants.SOME_OTHER_TITLE,
@@ -108,13 +108,13 @@ namespace Temporal.Tests
                     parameterValue
                 }
             };
-            await context.AddAsync(document);
-            await context.SaveChangesAsync();
+            await _context.AddAsync(document);
+            await _context.SaveChangesAsync();
             // Act
             document.Title = TemporalTestConstants.SOME_OTHER_TITLE;
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             // Assert
-            var actual = context.Documents.First(d => d.Id == document.Id);
+            var actual = _context.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
                 Title = TemporalTestConstants.SOME_OTHER_TITLE,
@@ -147,13 +147,13 @@ namespace Temporal.Tests
                     parameterValue
                 }
             };
-            await context.AddAsync(document);
-            await context.SaveChangesAsync();
+            await _context.AddAsync(document);
+            await _context.SaveChangesAsync();
             // Act
             document.Title = TemporalTestConstants.SOME_OTHER_TITLE;
             parameterValue.Code = TemporalTestConstants.SOME_OTHER_CODE;
             parameterValue.Value = TemporalTestConstants.SOME_OTHER_VALUE;
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             // Assert
             //var actual = await domainDbContext
             //    .Documents
@@ -172,7 +172,7 @@ namespace Temporal.Tests
             //    })
             //    .ToListAsync();
 
-            var actual = await context
+            var actual = await _context
                 .Documents
                 .TemporalAll()
                 .Where(d => d.Id == document.Id)
@@ -187,7 +187,7 @@ namespace Temporal.Tests
 
             foreach (var documentItem in actual)
             {
-                var parameterValues = context
+                var parameterValues = _context
                     .ParameterValues
                     .TemporalFromTo(documentItem.ValidFrom, documentItem.ValidTo)
                     .Where(pv => pv.DocumentId == documentItem.Id)
