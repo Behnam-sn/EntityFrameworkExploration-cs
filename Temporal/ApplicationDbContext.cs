@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Temporal
 {
-    public class DomainDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         public DbSet<Document> Documents { get; set; }
         public DbSet<ParameterValue> ParameterValues { get; set; }
 
-        public DomainDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
 
