@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Crud.Tests
 {
-    public class BloggingContextFixture : IAsyncDisposable
+    public class BloggingDbContextFixture : IAsyncDisposable
     {
-        public BloggingContext Context { get; }
+        public BloggingDbContext Context { get; }
 
-        public BloggingContextFixture()
+        public BloggingDbContextFixture()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<BloggingContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<BloggingDbContext>();
             optionsBuilder.UseSqlServer(CommonConstants.CONNECTION_STRING);
-            Context = new BloggingContext(optionsBuilder.Options);
+            Context = new BloggingDbContext(optionsBuilder.Options);
             Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
         }

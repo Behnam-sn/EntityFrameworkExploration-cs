@@ -1,12 +1,12 @@
 namespace Crud.Tests
 {
-    public class CrudTests : IClassFixture<BloggingContextFixture>
+    public class CrudTests : IClassFixture<BloggingDbContextFixture>
     {
-        private readonly BloggingContext context;
+        private readonly BloggingDbContext context;
 
-        public CrudTests(BloggingContextFixture bloggingContextFixture)
+        public CrudTests(BloggingDbContextFixture bloggingDbContextFixture)
         {
-            context = bloggingContextFixture.Context;
+            context = bloggingDbContextFixture.Context;
         }
 
         [Fact]

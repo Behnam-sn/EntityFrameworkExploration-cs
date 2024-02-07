@@ -2,12 +2,12 @@
 
 namespace Crud
 {
-    public class BloggingContext : DbContext
+    public class BloggingDbContext : DbContext
     {
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
 
-        public BloggingContext(DbContextOptions options) : base(options)
+        public BloggingDbContext(DbContextOptions options) : base(options)
         {
         }
     }

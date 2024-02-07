@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Temporal.Tests
 {
-    public class ApplicationDbContextFixture
+    public class ApplicationDbContextFixture : IAsyncDisposable
     {
         public ApplicationDbContext Context { get; }
 
@@ -14,6 +14,11 @@ namespace Temporal.Tests
             Context = new ApplicationDbContext(optionsBuilder.Options);
             Context.Database.EnsureDeleted();
             Context.Database.EnsureCreated();
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            await Context.DisposeAsync();
         }
     }
 }
