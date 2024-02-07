@@ -3,18 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Temporal.Tests
 {
-    public class UnitTest1 : IClassFixture<DomainDbContextFixture>
+    public class TemporalTests : IClassFixture<DomainDbContextFixture>
     {
-        private const string SOME_TITLE = "Title1";
-        private const string SOME_OTHER_TITLE = "Title2";
-        private const string SOME_CODE = "Code1";
-        private const string SOME_OTHER_CODE = "Code2";
-        private const int SOME_VALUE = 1;
-        private const int SOME_OTHER_VALUE = 2;
-
         private readonly DomainDbContext domainDbContext;
 
-        public UnitTest1(DomainDbContextFixture domainDbContextFixture)
+        public TemporalTests(DomainDbContextFixture domainDbContextFixture)
         {
             domainDbContext = domainDbContextFixture.DomainDbContext;
         }
@@ -25,13 +18,13 @@ namespace Temporal.Tests
             // Arrange
             var parameterValue = new ParameterValue()
             {
-                Code = SOME_CODE,
-                Value = SOME_VALUE
+                Code = TemporalTestConstants.SOME_CODE,
+                Value = TemporalTestConstants.SOME_VALUE
             };
             var document = new Document()
             {
                 Id = Guid.NewGuid(),
-                Title = SOME_TITLE,
+                Title = TemporalTestConstants.SOME_TITLE,
                 ParameterValues = new List<ParameterValue>
                 {
                     parameterValue
@@ -44,13 +37,13 @@ namespace Temporal.Tests
             var actual = domainDbContext.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
-                Title = SOME_TITLE,
+                Title = TemporalTestConstants.SOME_TITLE,
                 ParameterValues = new[]
                 {
                     new
                     {
-                        Code = SOME_CODE,
-                        Value = SOME_VALUE
+                        Code = TemporalTestConstants.SOME_CODE,
+                        Value = TemporalTestConstants.SOME_VALUE
                     }
                 }
             });
@@ -62,13 +55,13 @@ namespace Temporal.Tests
             // Arrange
             var parameterValue = new ParameterValue()
             {
-                Code = SOME_CODE,
-                Value = SOME_VALUE
+                Code = TemporalTestConstants.SOME_CODE,
+                Value = TemporalTestConstants.SOME_VALUE
             };
             var document = new Document()
             {
                 Id = Guid.NewGuid(),
-                Title = SOME_TITLE,
+                Title = TemporalTestConstants.SOME_TITLE,
                 ParameterValues = new List<ParameterValue>
                 {
                     parameterValue
@@ -77,21 +70,21 @@ namespace Temporal.Tests
             await domainDbContext.AddAsync(document);
             await domainDbContext.SaveChangesAsync();
             // Act
-            document.Title = SOME_OTHER_TITLE;
-            parameterValue.Code = SOME_OTHER_CODE;
-            parameterValue.Value = SOME_OTHER_VALUE;
+            document.Title = TemporalTestConstants.SOME_OTHER_TITLE;
+            parameterValue.Code = TemporalTestConstants.SOME_OTHER_CODE;
+            parameterValue.Value = TemporalTestConstants.SOME_OTHER_VALUE;
             await domainDbContext.SaveChangesAsync();
             // Assert
             var actual = domainDbContext.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
-                Title = SOME_OTHER_TITLE,
+                Title = TemporalTestConstants.SOME_OTHER_TITLE,
                 ParameterValues = new[]
                 {
                     new
                     {
-                        Code = SOME_OTHER_CODE,
-                        Value = SOME_OTHER_VALUE
+                        Code = TemporalTestConstants.SOME_OTHER_CODE,
+                        Value = TemporalTestConstants.SOME_OTHER_VALUE
                     }
                 }
             });
@@ -103,13 +96,13 @@ namespace Temporal.Tests
             // Arrange
             var parameterValue = new ParameterValue()
             {
-                Code = SOME_CODE,
-                Value = SOME_VALUE
+                Code = TemporalTestConstants.SOME_CODE,
+                Value = TemporalTestConstants.SOME_VALUE
             };
             var document = new Document()
             {
                 Id = Guid.NewGuid(),
-                Title = SOME_TITLE,
+                Title = TemporalTestConstants.SOME_TITLE,
                 ParameterValues = new List<ParameterValue>
                 {
                     parameterValue
@@ -118,19 +111,19 @@ namespace Temporal.Tests
             await domainDbContext.AddAsync(document);
             await domainDbContext.SaveChangesAsync();
             // Act
-            document.Title = SOME_OTHER_TITLE;
+            document.Title = TemporalTestConstants.SOME_OTHER_TITLE;
             await domainDbContext.SaveChangesAsync();
             // Assert
             var actual = domainDbContext.Documents.First(d => d.Id == document.Id);
             actual.Should().BeEquivalentTo(new
             {
-                Title = SOME_OTHER_TITLE,
+                Title = TemporalTestConstants.SOME_OTHER_TITLE,
                 ParameterValues = new[]
                 {
                     new
                     {
-                        Code = SOME_CODE,
-                        Value = SOME_VALUE
+                        Code = TemporalTestConstants.SOME_CODE,
+                        Value = TemporalTestConstants.SOME_VALUE
                     }
                 }
             });
@@ -142,13 +135,13 @@ namespace Temporal.Tests
             // Arrange
             var parameterValue = new ParameterValue()
             {
-                Code = SOME_CODE,
-                Value = SOME_VALUE
+                Code = TemporalTestConstants.SOME_CODE,
+                Value = TemporalTestConstants.SOME_VALUE
             };
             var document = new Document()
             {
                 Id = Guid.NewGuid(),
-                Title = SOME_TITLE,
+                Title = TemporalTestConstants.SOME_TITLE,
                 ParameterValues = new List<ParameterValue>
                 {
                     parameterValue
@@ -157,12 +150,29 @@ namespace Temporal.Tests
             await domainDbContext.AddAsync(document);
             await domainDbContext.SaveChangesAsync();
             // Act
-            document.Title = SOME_OTHER_TITLE;
-            parameterValue.Code = SOME_OTHER_CODE;
-            parameterValue.Value = SOME_OTHER_VALUE;
+            document.Title = TemporalTestConstants.SOME_OTHER_TITLE;
+            parameterValue.Code = TemporalTestConstants.SOME_OTHER_CODE;
+            parameterValue.Value = TemporalTestConstants.SOME_OTHER_VALUE;
             await domainDbContext.SaveChangesAsync();
             // Assert
-            var documents = await domainDbContext
+            //var actual = await domainDbContext
+            //    .Documents
+            //    .TemporalAll()
+            //    .Where(d => d.Id == document.Id)
+            //    .Select(d => new DocumentVM
+            //    {
+            //        Id = d.Id,
+            //        Title = d.Title,
+            //        ParameterValues = domainDbContext.ParameterValues
+            //        .TemporalFromTo(EF.Property<DateTime>(d, "ValidFrom"), EF.Property<DateTime>(d, "ValidTo"))
+            //        .Where(pv => pv.DocumentId == d.Id)
+            //        .ToList(),
+            //        ValidFrom = EF.Property<DateTime>(d, "ValidFrom"),
+            //        ValidTo = EF.Property<DateTime>(d, "ValidTo")
+            //    })
+            //    .ToListAsync();
+
+            var actual = await domainDbContext
                 .Documents
                 .TemporalAll()
                 .Where(d => d.Id == document.Id)
@@ -175,7 +185,7 @@ namespace Temporal.Tests
                 })
                 .ToListAsync();
 
-            foreach (var documentItem in documents)
+            foreach (var documentItem in actual)
             {
                 var parameterValues = domainDbContext
                     .ParameterValues
@@ -186,29 +196,29 @@ namespace Temporal.Tests
                 documentItem.ParameterValues = parameterValues;
             }
 
-            documents.Should().BeEquivalentTo(new[]
+            actual.Should().BeEquivalentTo(new[]
             {
                 new
                 {
-                    Title = SOME_TITLE,
+                    Title = TemporalTestConstants.SOME_TITLE,
                     ParameterValues = new[]
                     {
                         new
                         {
-                            Code = SOME_CODE,
-                            Value = SOME_VALUE
+                            Code = TemporalTestConstants.SOME_CODE,
+                            Value = TemporalTestConstants.SOME_VALUE
                         }
                     }
                 },
                 new
                 {
-                    Title = SOME_OTHER_TITLE,
+                    Title = TemporalTestConstants.SOME_OTHER_TITLE,
                     ParameterValues = new[]
                     {
                         new
                         {
-                            Code = SOME_OTHER_CODE,
-                            Value = SOME_OTHER_VALUE
+                            Code = TemporalTestConstants.SOME_OTHER_CODE,
+                            Value = TemporalTestConstants.SOME_OTHER_VALUE
                         }
                     }
                 }
