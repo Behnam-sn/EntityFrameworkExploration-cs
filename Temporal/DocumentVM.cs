@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace Temporal
 {
     public class DocumentVM : Document
     {
